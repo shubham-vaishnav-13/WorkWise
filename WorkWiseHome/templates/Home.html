@@ -1,0 +1,147 @@
+{% load static tailwind_tags %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WorkWise</title>
+    <link rel="shortcut icon" href="{% static 'images/logo.jpg' %}" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+    {% tailwind_css %}
+
+</head>
+<body >
+    <nav class="p-3 flex bg-white justify-between items-center fixed top-0 left-0 right-0 z-20 shadow-md">
+        <a href="#" id="brand" class="flex gap-2 items-center flex-1">
+            <img class="object-cover max-w-12 max-h-12" src="{% static 'images/logo.jpg' %}" alt="Logo">            
+            <span class="text-lg font-medium font-display">WorkWise</span>
+        </a>
+        <div id="nav-menu" class="hidden lg:flex gap-12 mt-2">
+            <a href="#" class="font-medium hover:text-primary">Home</a>
+            <a href="#" class="font-medium hover:text-primary">Cleaning</a>
+            <a href="#" class="font-medium hover:text-primary">Repair</a>
+            <a href="#" class="font-medium hover:text-primary">Kitchen</a>
+
+
+        </div>
+        <div class="hidden lg:flex flex-1 justify-end">
+
+            <button class="flex gap-2 items-center border border-gray-400 px-6 py-2 rounded-lg hover:border-gray-600">
+                <img src="{% static 'images/asset 1.svg' %}" alt="">
+                <span class="font-display font-medium">Login / Sign Up</span>
+                <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </div>
+        
+
+        <button class="p-2 lg:hidden" onclick="handleMenu()">
+            <i class="fa-solid fa-bars text-gray-600"></i>
+        </button>
+
+        {% comment "" %} for mobile{% endcomment %}
+
+        <div id="nav-dialog" class="hidden fixed z-10 md:hidden bg-white inset-0 p-3">
+            <div id="nav-bar" class="flex justify-between">
+                <a href="#" id="brand" class="flex gap-2 items-center">
+                    
+                    <img class="object-cover max-w-12 max-h-12" src="{% static 'images/logo.jpg' %}" alt="Logo">
+                    <span class="text-lg font-medium font-display">WorkWise</span>
+                </a>
+                <button class="p-2 md:hidden" onclick="handleMenu()">
+                    <i class="fa-solid fa-xmark text-gray-600"></i>
+                </button>
+            </div>
+            <div class="mt-6">
+                <a href="#" class="font-medium m-3 p-3 hover:bg-gray-50 block rounded-lg">Home</a>
+                <a href="#" class="font-medium m-3 p-3 hover:bg-gray-50 block rounded-lg">Cleaing</a>
+                <a href="#" class="font-medium m-3 p-3 hover:bg-gray-50 block rounded-lg">Repair</a>
+                <a href="#" class="font-medium m-3 p-3 hover:bg-gray-50 block rounded-lg">Kitchen</a>
+                
+
+            </div>
+            <div class="h-[1px] bg-gray-300"></div>
+            <button class="mt-6 w-full flex gap-2 items-center  px-6 py-4 rounded-lg hover:bg-gray-50">
+                
+                <img src="{% static 'images/asset 1.svg' %}" alt="">
+                <span>Login</span>
+            </button>
+        </div>
+
+    </nav>
+
+
+    <main class ="mt-16">
+
+        <div id="hero" class="min-h-screen bg-gradient-to-b from-purple-50 via-orange-50 to-transparent">
+            <div id="hero-container" class="max-w-4xl mx-auto px-6 pt-6 pb-16 flex flex-col sm:items-center sm:text-center sm:pt-12 sm:max-w-2xl">
+                 <div id="version-text" class="flex items-center my-6 gap-2 border border-yellow-300 
+                 bg-yellow-50 rounded-lg px-3 py-1 w-fit shadow-md hover:shadow-lg hover:-translate-y-1 transition group">
+                     <div class="w-2 h-2 bg-yellow-400 rounded-full border border-yellow-600"></div>
+                     <p class="font-display font-medium text-yellow-600">v1.0 <span class="text-yellow-800">Trusted Services, Anytime, Anywhere.</span></p>
+                     <i class="fa-solid fa-arrow-right text-yellow-600 group-hover:translate-x-1 transition duration-300"></i>
+                 </div>
+
+
+                 
+                 <div id="hero-features" class="hidden sm:flex gap-8 my-6">
+                     <div class="flex justify-center gap-2 items-center text-gray-500 hover:text-slate-700">
+                         <i class="fa-regular fa-file-code text-sm"></i>
+                         <p>Discover Services </p>
+                     </div>
+                     <div class="flex justify-center gap-2 items-center text-gray-500 hover:text-slate-700">
+                         <i class="fa-solid fa-hand-back-fist"></i>
+                         <p>Easy Bookings</p>
+                     </div>
+                     <div class="flex justify-center gap-2 items-center text-gray-500 hover:text-slate-700">
+                         <i class="fa-solid fa-laptop"></i>
+                         <p>Explore Categories</p>
+                     </div>
+                 </div>
+                 <h1 class="text-4xl font-semibold leading-snug mt-4 sm:text-[50px]">Your One-Stop Solution for Trusted Home Services!</h1>
+                 <p class="text-xl mt-4 sm:text-2xl sm:mt-8 text-gray-800">Connecting You with Trusted Experts for Every Service, Anytime, Anywhere!</p>
+            
+                 <div id="buttons-container" class="mt-12 flex gap-4 flex-col sm:flex-row">
+                     <button class="px-8 py-3 font-semibold rounded-lg text-white bg-primary shadow-sm hover:bg-opacity-90">Explore</button>
+                     <button class="px-8 py-3 font-semibold rounded-lg bg-white border border-gray-400 hover:border-gray-800">Login</button>
+                 </div>
+            </div>
+    </main>
+    
+
+
+
+
+
+
+
+    <footer class="bg-gray-100 mt-12">
+        <div class="max-w-4xl mx-auto px-6 py-12 flex flex-col sm:items-center sm:text-center sm:pt-12 sm:max-w-2xl">
+            <div id="footer-brand" class="flex gap-2 items-center">
+                <img class="object-cover max-w-12 max-h-12" src="{% static 'images/logo-removebg-preview.png' %}" alt="Logo">            
+                <span class="text-lg font-medium font-display">WorkWise</span>
+            </div>
+            <p class="mt-4 text-gray-600">Dedicated to connecting you with reliable professionals, ensuring hassle-free bookings, secure payments, and exceptional service experiences tailored to your needs.</p>
+            <div id="footer-links" class="mt-6 flex gap-4">
+                <a href="#" class="text-gray-600 hover:text-gray-800">About us</a>
+                <a href="#" class="text-gray-600 hover:text-gray-800">Terms & Conditions</a>
+                <a href="#" class="text-gray-600 hover:text-gray-800">Contact Us</a>
+                <a href="#" class="text-gray-600 hover:text-gray-800">Privacy policy</a>
+                <a href="#" class="text-gray-600 hover:text-gray-800">Login</a>
+            </div>
+            <div id="footer-socials" class="mt-6 flex gap-4">
+                <a href="#" class="text-gray-600 hover:text-gray-800"><i class="fa-brands fa-twitter"></i></a>
+                <a href="#" class="text-gray-600 hover:text-gray-800"><i class="fa-brands fa-facebook"></i></a>
+                <a href="#" class="text-gray-600 hover:text-gray-800"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" class="text-gray-600 hover:text-gray-800"><i class="fa-brands fa-linkedin"></i></a>
+            </div>
+            <p class="mt-6 text-gray-600">© Copyright 2025 WorkWise. All rights reserved. </p>
+        </div>
+
+
+
+        <script src="{% static 'script.js' %}"></script>
+
+</body>
+</html>

@@ -25,6 +25,7 @@ module.exports = {
          * Adjust the following line to match your project structure.
          */
         '../../**/templates/**/*.html',
+        './static/js/**/*.js',
 
         /**
          * JS: If you use Tailwind CSS in JavaScript, uncomment the following lines and make sure
@@ -42,7 +43,17 @@ module.exports = {
         // '../../**/*.py'
     ],
     theme: {
-        extend: {},
+        extend: {
+            colors: {
+                'primary': '#3238f2',
+              },
+            fontFamily: {
+                'disp': ['Poppins', 'sans-serif'],
+                'body': ['Inter', 'sans-serif']
+              }
+
+              
+        },
     },
     plugins: [
         /**
