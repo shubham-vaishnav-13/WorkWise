@@ -21,6 +21,7 @@ from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('Homeapp.urls')),
+    path('authentication/',include('authentication.urls')),
 
     path("__reload__/", include("django_browser_reload.urls")),
 
