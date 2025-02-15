@@ -30,8 +30,22 @@
             <a href="/kitchen" class="font-medium hover:text-primary">Kitchen</a>
 
         </div>
+        {% if request.user.is_authenticated %}
+            <div class="hidden lg:flex flex-1 justify-end">
+                <h2 class=" font-medium flex items-center ">{{ request.user.profile.first.full_name }}</h2>
+                <div class="w-4"></div>
+
+            <a href="/authentication/logout/">
+                <button class="flex gap-2 items-center border border-gray-400 px-6 py-2 rounded-lg hover:border-gray-600">
+                    <img src="{% static 'images/asset 1.svg' %}" alt="">
+                    <span class="font-display font-medium">Logout</span>
+                </button>
+            </a>
+            </div>
+
+        {% else %}
         <div class="hidden lg:flex flex-1 justify-end">
-            <a href="/authentication">
+        <a href="/authentication">
             <button class="flex gap-2 items-center border border-gray-400 px-6 py-2 rounded-lg hover:border-gray-600">
                 <img src="{% static 'images/asset 1.svg' %}" alt="">
                 <span class="font-display font-medium">Login / Sign Up</span>
@@ -39,6 +53,8 @@
             </button>
         </a>
         </div>
+        {% endif %}
+
         
 
         <button class="p-2 lg:hidden" onclick="handleMenu()">
@@ -49,7 +65,7 @@
 
         <div id="nav-dialog" class="hidden fixed z-10 md:hidden bg-white inset-0 p-3">
             <div id="nav-bar" class="flex justify-between">
-                <a href="#" id="brand" class="flex gap-2 items-center">
+                <a href="/" id="brand" class="flex gap-2 items-center">
                     
                     <img class="object-cover max-w-12 max-h-12" src="{% static 'images/logo.jpg' %}" alt="Logo">
                     <span class="text-lg font-medium font-display">WorkWise</span>

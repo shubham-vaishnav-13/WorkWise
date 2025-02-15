@@ -32,7 +32,7 @@
                     <p class="mt-2 text-gray-500">Access your account below</p>
                 </div>
                 <form  method = "POST" class="mt-6 space-y-4">{% csrf_token %}
-
+                    
                     {% comment %} for Display messages {% endcomment %}
                     {% block ms %}
                     {% for message in messages %}
@@ -56,7 +56,7 @@
                     </div>
                     <div>
                         <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-                        <input type="password" id="password"
+                        <input type="password" id="password" name="password"
                             class="mt-1 w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 outline-none"
                             placeholder="Enter your password">
                     </div>
