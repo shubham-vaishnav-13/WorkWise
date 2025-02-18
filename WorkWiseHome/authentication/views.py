@@ -19,9 +19,7 @@ def signin(request):
             if user is not None:
                 login(request, user)
                 messages.success(request, 'Successfully logged in!')
-                # Get the user's profile ID
-                user_profile = UserProfile.objects.get(user=user)
-                return redirect(f'/{user_profile.id}/home')
+                return redirect('/')
             else:
                 messages.error(request, 'Invalid credentials')
                 return render(request, 'authentication/signin.html')
@@ -63,11 +61,8 @@ def signup(request):
             if User.objects.filter(username=email).exists():
                 messages.error(request, 'Email already exists')
                 return render(request, 'authentication/signup.html')
-        except Exception as identifier:
-            messages.error(request, 'An error occurred during registration')
-            return render(request, 'authentication/signup.html')
 
-        try:
+            # Create user and profile
             user = User.objects.create_user(username=email, email=email, password=password)
             UserProfile.objects.create(
                 user=user,
@@ -79,10 +74,13 @@ def signup(request):
                 password=password
             )
             
-            messages.success(request, 'Account created successfully')
+            request.session['registration_success'] = True
             return redirect('signin')
+
         except Exception as e:
+            print(f"Registration error: {str(e)}")
             messages.error(request, 'An error occurred during registration')
+            return render(request, 'authentication/signup.html')
             
     return render(request, 'authentication/signup.html')
 

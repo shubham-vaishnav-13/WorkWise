@@ -22,7 +22,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('Homeapp.urls')),
     path('authentication/',include('authentication.urls')),
-
+    path('accounts/', include('allauth.urls')),  # This should be before authentication urls
+    # ... other urls ...
     path("__reload__/", include("django_browser_reload.urls")),
 
 ]
