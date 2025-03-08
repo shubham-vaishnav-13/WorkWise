@@ -1,23 +1,89 @@
 {% extends "base.html" %}
+{% load static %}
+{% load static tailwind_tags %}
 
 {% block title %}
     Home Page
+    {% tailwind_css %}
 {% endblock title %}
 
-
 {% block content %}
-    <div class="min-h-screen bg-gradient-to-b from-purple-50 via-orange-50 to-transparent""></div>
-        {% block messages %}
-                    {% for message in messages %}
-                    <div class="relative px-4 py-3 mb-4 border rounded-lg {% if 'error' in message.tags %}bg-red-100 border-red-400 text-red-700{% elif 'success' in message.tags %}bg-green-100 border-green-400 text-green-700{% elif 'warning' in message.tags %}bg-yellow-100 border-yellow-400 text-yellow-700{% elif 'info' in message.tags %}bg-blue-100 border-blue-400 text-blue-700{% else %}bg-gray-100 border-gray-400 text-gray-700{% endif %}" role="alert">
-                        <strong class="font-bold">{{message}}</strong>
-                        <button class="absolute top-0 right-0 px-4 py-3 hover:opacity-75" onclick="this.parentElement.remove()">
-                            <svg class="w-4 h-4 fill-current" role="button" viewBox="0 0 20 20">
-                                <path d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" fill-rule="evenodd"></path>
-                            </svg>
-                        </button>
+<main class="mt-16">
+    <div class="container mx-auto mt-16 px-4 h-screen">
+        <div id="hero" class="min-h-screen bg-gradient-to-b from-purple-50 via-orange-50 to-transparent mb-5">
+            <div id="hero-container" class="mx-auto px-2 pt-6 pb-16 flex flex-col sm:items-center sm:text-center sm:pt-12 ">
+                <h1 class="text-5xl mb-5 font-mono">Welcome To the Wide Range Of Home Services</h1>
+
+                {% for service, range, nSlides in allServices%}
+                {% if service.0.category == "Plumber" or service.0.category == "Electrician" or service.0.category == "Carpenter"%}
+
+                    <h3 class="my-3 text-xl text-pretty text-center text-success">Explore the Service of {{ service.0.category }} </h3>            
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+                        {% for i in service %}
+                        <div class="flex flex-col bg-white shadow-sm border border-slate-200 rounded-lg my-6 w-[300px]">
+                            <div class="m-2.5 overflow-hidden rounded-md h-80 flex justify-center items-center">
+                              <img class="w-full h-full object-cover" src="{{ i.service_image.url }}" alt="profile-picture" />
+                            </div>
+                            <div class="p-6 text-left">
+                              <h4 class="mb-1 text-xl font-semibold text-slate-800">
+                                {{i.title}}
+                              </h4>
+                              <p
+                                class="text-lg text-left font-bold text-slate-500    uppercase">
+                                ₹{{i.price}} 
+                              </p>
+                              <p class="text-base text-slate-600 mt-4 font-light h-24 overflow-hidden">
+                                {{ i.description }}
+                              </p>
+
+                              {% comment %} for ratings {% endcomment %}
+                              <div class="flex items-center mb-2">
+                                <div class="flex text-yellow-400">
+                                    {% for star in "12345" %}
+                                        {% with position=forloop.counter %}
+                                            {% if i.rating >= position %}
+                                                <i class="fas fa-star"></i>
+                                            {% elif i.rating >= position|add:"-0.25" %}
+                                                <i class="fas fa-star-three-quarters"></i>
+                                            {% elif i.rating >= position|add:"-0.5" %}
+                                                <i class="fas fa-star-half-alt"></i>
+                                            {% elif i.rating >= position|add:"-0.75" %}
+                                                <i class="fas fa-star-quarter"></i>
+                                            {% else %}
+                                                <i class="far fa-star"></i>
+                                            {% endif %}
+                                        {% endwith %}
+                                    {% endfor %}
+                                </div>
+                                <span class="text-gray-600 text-sm ml-2">({{ i.rating|floatformat:1 }}/5)</span>
+                            </div>
+
+                            {% comment %} end of ratings {% endcomment %}
+
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="flex items-center">
+                                    <i class="fas fa-clock text-blue-500 mr-2"></i>
+                                    <span class="text-sm text-gray-600">{{ i.duration }} Minutes</span>
+                                </div>
+                            </div>
+
+
+                            </div>
+                            <div class="flex p-6 pt-2 gap-7">
+                              <button class="min-w-32  rounded-md bg-slate-800 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" type="button">
+                                Add Service
+                              </button>
+                            </div>
+                          </div>
+
+                        {% endfor %}
                     </div>
-                    {% endfor %}
-                    {% endblock %}
-    
-{% endblock  %}
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

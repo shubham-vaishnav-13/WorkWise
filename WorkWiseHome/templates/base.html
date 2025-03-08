@@ -26,8 +26,6 @@
         <div id="nav-menu" class="hidden lg:flex gap-12 mt-2">
             <a href="/home" class="font-medium hover:text-primary">Home</a>
             <a href="/cleaning" class="font-medium hover:text-primary">Cleaning</a>
-            <a href="/repair" class="font-medium hover:text-primary">Repair</a>
-            <a href="/kitchen" class="font-medium hover:text-primary">Kitchen</a>
 
         </div>
         {% if request.user.is_authenticated %}
@@ -83,8 +81,6 @@
             <div class="mt-6">
                 <a href="/home" class="font-medium m-3 p-3 hover:bg-gray-50 block rounded-lg">Home</a>
                 <a href="/cleaning" class="font-medium m-3 p-3 hover:bg-gray-50 block rounded-lg">Cleaing</a>
-                <a href="/repair" class="font-medium m-3 p-3 hover:bg-gray-50 block rounded-lg">Repair</a>
-                <a href="/kitchen" class="font-medium m-3 p-3 hover:bg-gray-50 block rounded-lg">Kitchen</a>
                 
 
             </div>
@@ -100,11 +96,29 @@
 
     </nav>
     {% block content %}
-
-
     <main class ="mt-16">
 
-        <div id="hero" class="min-h-screen bg-gradient-to-b from-purple-50 via-orange-50 to-transparent">
+
+
+        <div id="hero" class="min-h-screen bg-gradient-to-b from-purple-50 via-orange-50 to-transparent mb-5">
+
+            {% comment %} {% block ms %}
+            {% for message in messages %}
+            <div class="max-w-full mx-auto">
+                <div class="fixed top-20 right-4 z-50 min-w-80 animate-fade-in-down">
+            <div class="px-4 py-2 mb-4 border rounded-lg {% if 'error' in message.tags %}bg-red-100 border-red-400 text-red-700{% elif 'success' in message.tags %}bg-green-100 border-green-400 text-green-700{% elif 'warning' in message.tags %}bg-yellow-100 border-yellow-400 text-yellow-700{% elif 'info' in message.tags %}bg-blue-100 border-blue-400 text-blue-700{% else %}bg-gray-100 border-gray-400 text-gray-700{% endif %}" role="alert">
+                <strong class="font-bold">{{message}}</strong>
+                <button class="absolute top-0 right-0 px-4 py-3 hover:opacity-75" onclick="this.parentElement.remove()">
+                    <svg class="w-4 h-4 fill-current" role="button" viewBox="0 0 20 20">
+                        <path d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" fill-rule="evenodd"></path>
+                    </svg>
+                </button>
+            </div>
+            </div>
+            {% endfor %}
+        {% endblock %} {% endcomment %}
+
+
             <div id="hero-container" class="max-w-4xl mx-auto px-6 pt-6 pb-16 flex flex-col sm:items-center sm:text-center sm:pt-12 sm:max-w-2xl">
                  <div id="version-text" class="flex items-center my-6 gap-2 border border-yellow-300 
                  bg-yellow-50 rounded-lg px-3 py-1 w-fit shadow-md hover:shadow-lg hover:-translate-y-1 transition group">
@@ -129,8 +143,39 @@
                          <p>Explore Categories</p>
                      </div>
                  </div>
-                 <h1 class="text-4xl font-semibold leading-snug mt-4 sm:text-[50px]">Your One-Stop Solution for Trusted Home Services!</h1>
-                 <p class="text-xl mt-4 sm:text-2xl sm:mt-8 text-gray-800">Connecting You with Trusted Experts for Every Service, Anytime, Anywhere!</p>
+
+                 <h1 class="text-4xl font-semibold leading-snug sm:text-[50px]">Your One-Stop Solution for Trusted Home Services!</h1>
+                 
+                 <div class="h-[100px] mt-2">
+                    <h1 class="text-xl mt-4 sm:text-2xl sm:mt-8 text-gray-800" id="animated-heading" style="min-height: 70px; opacity: 1;">
+                        &nbsp;
+                    </h1>
+                 </div>
+                 
+                 <script>
+                     document.addEventListener('DOMContentLoaded', function() {
+                         const text = "Connecting You with Trusted Experts for Every Service, Anytime, Anywhere!";
+                         const heading = document.getElementById('animated-heading');
+                         let index = 0;
+                         
+                         function typeText() {
+                             if (index < text.length) {
+                                 heading.textContent += text.charAt(index);
+                                 index++;
+                                 setTimeout(typeText, 50); 
+                             } else {
+                                 setTimeout(() => {
+                                     heading.textContent = '';
+                                     index = 0;
+                                     typeText();
+                                 }, 2000); 
+                             }
+                         }
+                         
+                         typeText();
+                     });
+                 </script>
+                 {% comment %} <p class="text-xl mt-4 sm:text-2xl sm:mt-8 text-gray-800">Connecting You with Trusted Experts for Every Service, Anytime, Anywhere!</p> {% endcomment %}
             
                  <div id="buttons-container" class="sm: mt-12 flex gap-4 flex-row sm:flex-row">
                     <a href="/home"> <button class="px-8 py-3 font-semibold rounded-lg text-white bg-primary shadow-sm hover:bg-opacity-90">Explore</button></a>
@@ -138,10 +183,158 @@
                  </div>
             </div>
 
+            <div>                
+                <div id="companies-title" class="flex justify-center gap-2">
+                    <img class="translate-y-2" src="{% static 'images/asset2.svg' %}" alt="">
+                    <span class="font-semibold">EXPLORE MORE ABOUT WORKWISE</span>
+                    <img class="-scale-x-100 translate-y-2" src="{% static 'images/asset2.svg' %}" alt="">
+                </div>
+            </div>
 
-         
+
+            {% comment %} cutomize service display {% endcomment %}
+            <div class="boxes my-4 p-5">
+
+            <div class="grid mb-8 border border-gray-200 rounded-lg shadow-xs dark:border-gray-700 md:mb-12 md:grid-cols-2 bg-white dark:bg-gray-800">
+                
+                
+                <figure class="flex flex-col items-center justify-center p-8 text-center bg-white border-b border-gray-200 rounded-t-lg md:rounded-t-none md:rounded-ss-lg md:border-e dark:bg-gray-800 dark:border-gray-700">
+                    <blockquote class="max-w-2xl mx-auto mb-4 text-gray-500 lg:mb-8 dark:text-gray-400">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Very easy this was to integrate</h3>
+                        <p class="my-4">If you care for your time, I hands down would go with this."</p>
+                    </blockquote>
+                    <figcaption class="flex items-center justify-center ">
+                        <img class="rounded-full w-9 h-9" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/karen-nelson.png" alt="profile picture">
+                        <div class="space-y-0.5 font-medium dark:text-white text-left rtl:text-right ms-3">
+                            <div>Bonnie Green</div>
+                            <div class="text-sm text-gray-500 dark:text-gray-400 ">Developer at Open AI</div>
+                        </div>
+                    </figcaption>    
+                </figure>
+
+                
+                <figure class="flex flex-col items-center justify-center p-8 text-center bg-white border-b border-gray-200 md:rounded-se-lg dark:bg-gray-800 dark:border-gray-700">
+                    <blockquote class="max-w-2xl mx-auto mb-4 text-gray-500 lg:mb-8 dark:text-gray-400">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Solid foundation for any project</h3>
+                        <p class="my-4">Designing with Figma components that can be easily translated to the utility classes of Tailwind CSS is a huge timesaver!"</p>
+                    </blockquote>
+                    <figcaption class="flex items-center justify-center ">
+                        <img class="rounded-full w-9 h-9" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/roberta-casas.png" alt="profile picture">
+                        <div class="space-y-0.5 font-medium dark:text-white text-left rtl:text-right ms-3">
+                            <div>Roberta Casas</div>
+                            <div class="text-sm text-gray-500 dark:text-gray-400">Lead designer at Dropbox</div>
+                        </div>
+                    </figcaption>    
+                </figure>
+                <figure class="flex flex-col items-center justify-center p-8 text-center bg-white border-b border-gray-200 md:rounded-es-lg md:border-b-0 md:border-e dark:bg-gray-800 dark:border-gray-700">
+                    <blockquote class="max-w-2xl mx-auto mb-4 text-gray-500 lg:mb-8 dark:text-gray-400">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Mindblowing workflow</h3>
+                        <p class="my-4">Aesthetically, the well designed components are beautiful and will undoubtedly level up your next application."</p>
+                    </blockquote>
+                    <figcaption class="flex items-center justify-center ">
+                        <img class="rounded-full w-9 h-9" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/jese-leos.png" alt="profile picture">
+                        <div class="space-y-0.5 font-medium dark:text-white text-left rtl:text-right ms-3">
+                            <div>Jese Leos</div>
+                            <div class="text-sm text-gray-500 dark:text-gray-400">Software Engineer at Facebook</div>
+                        </div>
+                    </figcaption>    
+                </figure>
+                <figure class="flex flex-col items-center justify-center p-8 text-center bg-white border-gray-200 rounded-b-lg md:rounded-se-lg dark:bg-gray-800 dark:border-gray-700">
+                    <blockquote class="max-w-2xl mx-auto mb-4 text-gray-500 lg:mb-8 dark:text-gray-400">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Efficient Collaborating</h3>
+                        <p class="my-4">You have many examples that can be used to create a fast prototype for your team."</p>
+                    </blockquote>
+                    <figcaption class="flex items-center justify-center ">
+                        <img class="rounded-full w-9 h-9" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/joseph-mcfall.png" alt="profile picture">
+                        <div class="space-y-0.5 font-medium dark:text-white text-left rtl:text-right ms-3">
+                            <div>Joseph McFall</div>
+                            <div class="text-sm text-gray-500 dark:text-gray-400">CTO at Google</div>
+                        </div>
+                    </figcaption>    
+                </figure>
+            </div>
+
+        </div>
+
+            {% comment %} end of service display {% endcomment %}
 
 
+
+
+            
+         {% comment %} explore section {% endcomment %}
+            <div id="testimonials" class="container mt-12">
+                <div class="rounded-xl border flex flex-col lg:flex-row items-end">
+                    <div class="flex flex-col gap-12 p-8">
+                        
+                        <h3 class="text-xl leading-relaxed">ClickUp used ToDesktop to get their desktop app in front of customers in days instead of months.</h3>
+                        <div id="tag-container" class="flex gap-3 flex-wrap">
+                            <div class="flex gap-2 items-center justify-center bg-yellow-50 w-fit border border-yellow-300 px-3 py-1 rounded-md text-yellow-800">
+                                <i class="fa-solid fa-check"></i>
+                                <span class="font-display font-medium">Chromeless UI</span>
+                            </div>
+                            <div class="flex gap-2 items-center justify-center bg-yellow-50 w-fit border border-yellow-300 px-3 py-1 rounded-md text-yellow-800">
+                                <i class="fa-solid fa-check"></i>
+                                <span class="font-display font-medium">Native spellcheck</span>
+                            </div>
+                            <div class="flex gap-2 items-center justify-center bg-yellow-50 w-fit border border-yellow-300 px-3 py-1 rounded-md text-yellow-800">
+                                <i class="fa-solid fa-check"></i>
+                                <span class="font-display font-medium">Task time in menubar</span>
+                            </div>
+                            <div class="flex gap-2 items-center justify-center bg-yellow-50 w-fit border border-yellow-300 px-3 py-1 rounded-md text-yellow-800">
+                                <i class="fa-solid fa-check"></i>
+                                <span class="font-display font-medium">Notification count in the dock</span>
+                            </div>
+                            <div class="flex gap-2 items-center justify-center bg-yellow-50 w-fit border border-yellow-300 px-3 py-1 rounded-md text-yellow-800">
+                                <i class="fa-solid fa-check"></i>
+                                <span class="font-display font-medium">Global hotkey to create task</span>
+                            </div>
+                        </div>
+                        <p class="text-lg font-light text-gray-500">“ToDesktop provided us with a <span class="text-gray-800">polished desktop app</span> in no time. Their expert team guided us through a smooth migration from our outdated legacy desktop app, enabling us to deliver <span class="text-gray-800">new and improved features</span> to our customers within days.”</p>
+                        <div id="user-card" class="flex gap-4">
+                            <div class="w-12">
+                                <img src="./assets/asset 45.jpeg" class="rounded-full" alt="">
+                            </div>
+                            <div class="flex flex-col">
+                                <h3>Zeb Evans</h3>
+                                <p class="text-gray-500">Founder & CEO, <a href="#" class="anchor-hover">ClickUp</a> </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="">
+                        <img src="{% static 'images/signin/signin.jpeg' %}" class="pl-12" alt="">
+                </div>
+            </div>
+            {% comment %} end of explore section {% endcomment %}
+
+
+
+
+
+
+            <footer class="bg-gray-100 mt-12">
+                <div class="max-w-4xl mx-auto px-6 py-12 flex flex-col sm:items-center sm:text-center sm:pt-12 sm:max-w-2xl">
+                    <div id="footer-brand" class="flex gap-2 items-center">
+                        <img class="object-cover max-w-12 max-h-12" src="{% static 'images/logo-removebg-preview.png' %}" alt="Logo">            
+                        <span class="text-lg font-medium font-display">WorkWise</span>
+                    </div>
+                    <p class="mt-4 text-gray-600">Dedicated to connecting you with reliable professionals, ensuring hassle-free bookings, secure payments, and exceptional service experiences tailored to your needs.</p>
+                    <div id="footer-links" class="mt-6 flex gap-4">
+                        <a href="#" class="text-gray-600 hover:text-gray-800">About us</a>
+                        <a href="#" class="text-gray-600 hover:text-gray-800">Terms & Conditions</a>
+                        <a href="#" class="text-gray-600 hover:text-gray-800">Contact Us</a>
+                        <a href="#" class="text-gray-600 hover:text-gray-800">Privacy policy</a>
+                        <a href="#" class="text-gray-600 hover:text-gray-800">Login</a>
+                    </div>
+                    <div id="footer-socials" class="mt-6 flex gap-4">
+                        <a href="#" class="text-gray-600 hover:text-gray-800"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="#" class="text-gray-600 hover:text-gray-800"><i class="fa-brands fa-facebook"></i></a>
+                        <a href="#" class="text-gray-600 hover:text-gray-800"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="text-gray-600 hover:text-gray-800"><i class="fa-brands fa-linkedin"></i></a>
+                    </div>
+                    <p class="mt-6 text-gray-600">© Copyright 2025 WorkWise. All rights reserved. </p>
+                </div>
+        
 
     </main>
     
@@ -150,34 +343,16 @@
     
 
 
+
+
+
+
     {% endblock content %}
 
 
 
 
-    <footer class="bg-gray-100 mt-12">
-        <div class="max-w-4xl mx-auto px-6 py-12 flex flex-col sm:items-center sm:text-center sm:pt-12 sm:max-w-2xl">
-            <div id="footer-brand" class="flex gap-2 items-center">
-                <img class="object-cover max-w-12 max-h-12" src="{% static 'images/logo-removebg-preview.png' %}" alt="Logo">            
-                <span class="text-lg font-medium font-display">WorkWise</span>
-            </div>
-            <p class="mt-4 text-gray-600">Dedicated to connecting you with reliable professionals, ensuring hassle-free bookings, secure payments, and exceptional service experiences tailored to your needs.</p>
-            <div id="footer-links" class="mt-6 flex gap-4">
-                <a href="#" class="text-gray-600 hover:text-gray-800">About us</a>
-                <a href="#" class="text-gray-600 hover:text-gray-800">Terms & Conditions</a>
-                <a href="#" class="text-gray-600 hover:text-gray-800">Contact Us</a>
-                <a href="#" class="text-gray-600 hover:text-gray-800">Privacy policy</a>
-                <a href="#" class="text-gray-600 hover:text-gray-800">Login</a>
-            </div>
-            <div id="footer-socials" class="mt-6 flex gap-4">
-                <a href="#" class="text-gray-600 hover:text-gray-800"><i class="fa-brands fa-twitter"></i></a>
-                <a href="#" class="text-gray-600 hover:text-gray-800"><i class="fa-brands fa-facebook"></i></a>
-                <a href="#" class="text-gray-600 hover:text-gray-800"><i class="fa-brands fa-instagram"></i></a>
-                <a href="#" class="text-gray-600 hover:text-gray-800"><i class="fa-brands fa-linkedin"></i></a>
-            </div>
-            <p class="mt-6 text-gray-600">© Copyright 2025 WorkWise. All rights reserved. </p>
-        </div>
-
+    
 
 
         <script src="{% static 'script.js' %}"></script>

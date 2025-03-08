@@ -1,0 +1,10 @@
+{% autoescape off %}
+    
+Hi , {{user.username}}
+
+Please click on the link below to activate your account:
+
+<a href="http://{{ domain }}/authentication/activate/{{ uid }}/{{ token }}/"></a>
+
+
+{% endautoescape %}
