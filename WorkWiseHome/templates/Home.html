@@ -1,13 +1,22 @@
 {% extends "base.html" %}
 {% load static %}
 {% load static tailwind_tags %}
+{% tailwind_css %}
 
 {% block title %}
     Home Page
-    {% tailwind_css %}
 {% endblock title %}
 
+{% block extrahead %}
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+{% endblock %}
+
 {% block content %}
+<script>
+
+
+</script>
 <main class="mt-16">
     <div class="container mx-auto mt-16 px-4 h-screen">
         <div id="hero" class="min-h-screen bg-gradient-to-b from-purple-50 via-orange-50 to-transparent mb-5">
@@ -15,8 +24,8 @@
                 <h1 class="text-5xl mb-5 font-mono">Welcome To the Wide Range Of Home Services</h1>
 
                 {% for service, range, nSlides in allServices%}
-                {% if service.0.category == "Plumber" or service.0.category == "Electrician" or service.0.category == "Carpenter"%}
-
+                {% comment %} {% if service.0.category == "Plumber" or service.0.category == "Electrician" or service.0.category == "Carpenter"%} {% endcomment %}
+                <section class="{{ service.0.category }}">
                     <h3 class="my-3 text-xl text-pretty text-center text-success">Explore the Service of {{ service.0.category }} </h3>            
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -27,7 +36,7 @@
                               <img class="w-full h-full object-cover" src="{{ i.service_image.url }}" alt="profile-picture" />
                             </div>
                             <div class="p-6 text-left">
-                              <h4 class="mb-1 text-xl font-semibold text-slate-800">
+                              <h4 class="mb-1 text-xl font-semibold text-slate-800 " id="namepr{{i.id}}">
                                 {{i.title}}
                               </h4>
                               <p
@@ -71,19 +80,306 @@
 
 
                             </div>
+
+                            
+                            {% if request.user.is_authenticated %}
                             <div class="flex p-6 pt-2 gap-7">
-                              <button class="min-w-32  rounded-md bg-slate-800 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" type="button">
-                                Add Service
-                              </button>
-                            </div>
+                                <span id="divpr{{i.service_id}}" class="divpr">
+                                  <button id="pr{{i.service_id}}"  class="cartb min-w-32  rounded-md
+                                   bg-slate-800 py-2 px-4 border border-transparent 
+                                   text-center text-sm text-white transition-all shadow-md 
+                                   hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" type="button">
+                                    Add Service
+                                  </button>
+                                </span>
+                                
+    
+                                </div>
+                            {% else %}
+                            <div class="flex p-6 pt-2 gap-7">
+                                <span >
+                                    <a href="/authentication">
+                                  <button  class="cartb min-w-32  rounded-md
+                                   bg-slate-800 py-2 px-4 border border-transparent 
+                                   text-center text-sm text-white transition-all shadow-md 
+                                   hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" type="button">
+                                    Login to Add Service
+                                  </button>
+                                </a>
+                                </span>
+                            
+                                </div>
+                            {% endif %}
+                                
+
+                            
                           </div>
 
                         {% endfor %}
                     </div>
-                {% endif %}
+
+                </section>
+                {% comment %} {% endif %} {% endcomment %}
                 {% endfor %}
             </div>
         </div>
     </div>
 </main>
+
+
 {% endblock %}
+
+{% block js %}
+
+<script>
+
+    // Find the cart item from local storage
+    let cart = {};
+    if(localStorage.getItem('cart') == null) {
+        cart = {};
+    } else {
+        try {
+            cart = JSON.parse(localStorage.getItem('cart'));
+            const cartElement = document.getElementById('cart');
+            if (cartElement) {
+                let totalItems = Object.values(cart).reduce((sum, count) => sum + count, 0);
+                cartElement.innerHTML = '('+totalItems+')';
+            }
+            // Update the cart UI (add +/- buttons)
+            updateCart(cart);
+        } catch (error) {
+            console.error("Error parsing cart from localStorage:", error);
+            localStorage.removeItem('cart');
+            cart = {};
+        }
+    }
+
+    // If add to cart service button is clicked, increment the cart count
+    $('.cartb').click(function() {
+        var idstr = this.id.toString();
+        if(cart[idstr] != undefined) {
+            cart[idstr] = cart[idstr] + 1;
+        } else {
+            cart[idstr] = 1;
+        }
+        localStorage.setItem('cart', JSON.stringify(cart));
+
+        // Update cart count in navbar
+        let totalItems = Object.values(cart).reduce((sum, count) => sum + count, 0);
+        const cartElement = document.getElementById('cart');
+        if (cartElement) {
+            cartElement.innerHTML = '('+totalItems+')';
+        }
+        
+        // Update the cart UI
+        updateCart(cart);
+        
+        // Update popover content
+        updatePopoverContent();
+    });
+
+    // Update popover content
+    function updatePopoverContent() {
+        const popcartElement = document.getElementById('popcart');
+        if (!popcartElement) return;
+        
+        let popStr = '<h5 class="font-bold text-center">Cart For Services</h5>';
+        
+        // Check if cart has items
+        if (Object.keys(cart).length === 0) {
+            popStr += '<p>Your cart is empty</p>';
+            popcartElement.innerHTML = popStr;
+            return;
+        }
+        
+        // Add items to popover
+        popStr += '<div class="my-2">';
+        let i = 1;
+        for (const item in cart) {
+            // Try to get name from page by extracting service ID from item
+            const itemId = item.replace('pr', '');
+            
+            // First try to find a direct name element
+            const nameElement = document.getElementById('namepr' + itemId);
+            
+            let itemName = 'Service';
+            if (nameElement) {
+                itemName = nameElement.textContent.trim();
+            } else {
+                // If not found directly, search in the parent container
+                const serviceContainer = document.querySelector(`#divpr${itemId}`).closest('.flex.flex-col');
+                if (serviceContainer) {
+                    const titleElement = serviceContainer.querySelector('h4');
+                    if (titleElement) {
+                        itemName = titleElement.textContent.trim();
+                    }
+                }
+            }
+            
+            popStr += `<div><b>${i}.</b> ${itemName.substring(0, 15)}... <b>Qty: ${cart[item]}</b></div>`;
+            i++;
+        }
+        popStr += '</div>';
+        
+        // Add checkout/clear buttons
+        popStr += `
+            <div class="flex justify-between mt-3">
+                <a href="/checkout" class="bg-blue-500 text-white px-3 py-1 rounded text-sm">Checkout</a>
+                <button onclick="clearCart()" class="bg-red-500 text-white px-3 py-1 rounded text-sm">Clear Cart</button>
+            </div>
+        `;
+        
+        popcartElement.innerHTML = popStr;
+
+        // Add total to popover
+        const total = calculateTotal();
+        popcartElement.innerHTML += `<p class="mt-3 text-center">Total: ₹${total}</p>`;
+
+    }
+    
+    // Initialize popover content if it exists
+    const popcartElement = document.getElementById('popcart');
+    if (popcartElement) {
+        updatePopoverContent();
+    }
+
+    // Function to clear cart
+    function clearCart() {
+        localStorage.removeItem('cart');
+        cart = {};
+        
+        // Update cart count in navbar
+        const cartElement = document.getElementById('cart');
+        if (cartElement) {
+            cartElement.innerHTML = '(0)';
+        }
+        
+        // Reset all service buttons to "Add Service"
+        $('.divpr').each(function() {
+            const id = this.id.replace('divpr', '');
+            $(this).html(`
+                <button id="pr${id}" class="cartb min-w-32 rounded-md bg-slate-800 py-2 px-4 border border-transparent 
+                text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none 
+                active:bg-slate-700 hover:bg-slate-700 active:shadow-none" type="button">Add Service</button>
+            `);
+        });
+        
+        // Update popover
+        updatePopoverContent();
+    }
+
+    // Function to update cart UI with +/- buttons
+    function updateCart(cart) {
+        for (var item in cart) {
+            // Extract the service ID from the item key (remove 'pr' prefix)
+            const itemId = item.replace('pr', '');
+            const divElement = document.getElementById('divpr' + itemId);
+            
+            if (divElement) {
+                divElement.innerHTML = `
+                    <button id='minus${item}' class='min-w-8 rounded-md bg-slate-800 py-2 px-4 border border-transparent 
+                    text-center text-sm text-white transition-all shadow-md minus'>-</button>
+                    <span id='val${item}' class="px-3">${cart[item]}</span>
+                    <button id='plus${item}' class='min-w-8 rounded-md bg-slate-800 py-2 px-4 border border-transparent 
+                    text-center text-sm text-white transition-all shadow-md plus'>+</button>
+                `;
+            }
+        }
+    }
+
+    // Use event delegation for minus button clicks
+    $(document).on("click", "button.minus", function() {
+        console.log("Minus clicked");
+        var itemId = this.id.slice(5); // Remove 'minus' prefix
+        
+        if (cart[itemId] > 1) {
+            cart[itemId] = cart[itemId] - 1;
+        } else {
+            // If quantity becomes 0, remove item from cart
+            delete cart[itemId];
+            
+            // Extract the service ID from the item key (remove 'pr' prefix)
+            const serviceId = itemId.replace('pr', '');
+            const divElement = document.getElementById('divpr' + serviceId);
+            
+            if (divElement) {
+                // Restore "Add Service" button
+                divElement.innerHTML = `
+                    <button id="${itemId}" class="cartb min-w-32 rounded-md bg-slate-800 py-2 px-4 border border-transparent 
+                    text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 
+                    focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none" type="button">Add Service</button>
+                `;
+            }
+        }
+        
+        // Update localStorage
+        localStorage.setItem('cart', JSON.stringify(cart));
+        
+        // Update cart count in navbar
+        let totalItems = Object.values(cart).reduce((sum, count) => sum + count, 0);
+        const cartElement = document.getElementById('cart');
+        if (cartElement) {
+            cartElement.innerHTML = '('+totalItems+')';
+        }
+        
+        // Update quantity display if item still exists in cart
+        if (cart[itemId]) {
+            const valElement = document.getElementById('val' + itemId);
+            if (valElement) {
+                valElement.innerHTML = cart[itemId];
+            }
+        }
+        
+        // Update popover content
+        updatePopoverContent();
+    });
+
+    // Use event delegation for plus button clicks
+    $(document).on("click", "button.plus", function() {
+        console.log("Plus clicked");
+        var itemId = this.id.slice(4); // Remove 'plus' prefix
+        cart[itemId] = cart[itemId] + 1;
+        
+        // Update localStorage
+        localStorage.setItem('cart', JSON.stringify(cart));
+        
+        // Update cart count in navbar
+        let totalItems = Object.values(cart).reduce((sum, count) => sum + count, 0);
+        const cartElement = document.getElementById('cart');
+        if (cartElement) {
+            cartElement.innerHTML = '('+totalItems+')';
+        }
+        
+        // Update quantity display
+        const valElement = document.getElementById('val' + itemId);
+        if (valElement) {
+            valElement.innerHTML = cart[itemId];
+        }
+        
+        // Update popover content
+        updatePopoverContent();
+    });
+
+    // add one total calculating function which shows in popover
+    function calculateTotal() {
+        let total = 0;
+        for (const item in cart) {
+            const itemId = item.replace('pr', '');
+            // Find the service container first
+            const serviceContainer = document.querySelector(`#divpr${itemId}`).closest('.flex.flex-col');
+            if (serviceContainer) {
+                // Find the price element within the container
+                const priceElement = serviceContainer.querySelector('p.text-lg.text-left.font-bold');
+                if (priceElement) {
+                    const price = parseInt(priceElement.textContent.replace('₹', '').trim());
+                    total += price * cart[item];
+                }
+            }
+        }
+        return total;
+    }
+    
+</script>
+
+{% endblock js %}
+
