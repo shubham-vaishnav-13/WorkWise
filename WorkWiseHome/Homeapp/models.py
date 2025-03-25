@@ -41,3 +41,32 @@ class Service(models.Model):
 
     def __str__(self):
         return f"{self.title} - {self.provider.service_provider_name}"
+
+
+class Orders(models.Model):
+    order_id = models.AutoField(primary_key=True)
+    items_json = models.TextField()
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    name = models.CharField(max_length=90)
+    address = models.CharField(max_length=255)
+    city = models.CharField(max_length=50)
+    state = models.CharField(max_length=50)
+    pincode = models.CharField(max_length=10)
+    phoneno = models.CharField(max_length=15)
+    oid = models.CharField(max_length=50,blank=True)
+    amountpaid = models.CharField(max_length=50,blank=True,null=True)
+    paymentstatus = models.CharField(max_length=50,blank=True)
+
+    def __str__(self):
+        return f"Order ID: {self.order_id} - {self.name}"
+    
+
+class OrderUpdate(models.Model):
+    update_id = models.AutoField(primary_key=True)
+    order_id = models.IntegerField(default="")
+    update_desc = models.TextField()
+    deliverd = models.BooleanField(default=False)
+    timestamp = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return self.update_desc[0:8] + "..." 

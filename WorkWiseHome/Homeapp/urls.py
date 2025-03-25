@@ -7,6 +7,8 @@ urlpatterns = [
     path('',views.main,name="main"),
     path('home/',views.home,name="home"),
     path('checkout/',views.checkout,name="checkout"),
+    path('get_service_details/<int:service_id>/', views.get_service_details, name='get_service_details'),
+
 ] 
 
 if settings.DEBUG:
