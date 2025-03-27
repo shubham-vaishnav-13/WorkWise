@@ -45,17 +45,18 @@ class Service(models.Model):
 
 class Orders(models.Model):
     order_id = models.AutoField(primary_key=True)
+    email = models.EmailField(default="")
     items_json = models.TextField()
-    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    amount = models.IntegerField(default=0)
     name = models.CharField(max_length=90)
     address = models.CharField(max_length=255)
     city = models.CharField(max_length=50)
     state = models.CharField(max_length=50)
     pincode = models.CharField(max_length=10)
     phoneno = models.CharField(max_length=15)
-    oid = models.CharField(max_length=50,blank=True)
-    amountpaid = models.CharField(max_length=50,blank=True,null=True)
-    paymentstatus = models.CharField(max_length=50,blank=True)
+    razorpay_order_id = models.CharField(max_length=50, default="")
+    razorpay_payment_id = models.CharField(max_length=50, default="")
+    payment_verified = models.BooleanField(default=False)
 
     def __str__(self):
         return f"Order ID: {self.order_id} - {self.name}"
@@ -69,4 +70,4 @@ class OrderUpdate(models.Model):
     timestamp = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return self.update_desc[0:8] + "..." 
+        return self.update_desc[0:8] + "..."    

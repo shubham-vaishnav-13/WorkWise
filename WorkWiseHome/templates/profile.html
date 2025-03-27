@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+{% load static %}
+{% load static tailwind_tags %}
+{% tailwind_css %}
+
+{% block title %}
+    Profile Page
+{% endblock title %}
+
+{% block content %}
+
+<main class="mt-16">
+
+    <nav class="p-3 flex bg-white justify-between items-center fixed top-0 left-0 right-0 z-20 shadow-md">
+        <a href="/" id="brand" class="flex gap-2 items-center flex-1">
+            <img class="object-cover max-w-12 max-h-12" src="{% static 'images/logo.jpg' %}" alt="Logo">            
+            <span class="text-lg font-medium font-display">WorkWise</span>
+        </a>
+        <div id="nav-menu" class="hidden lg:flex gap-12 mt-2">
+            <a href="/" class="font-medium hover:text-primary">Home</a>
+            <a href="/home" class="font-medium hover:text-primary">Services</a>
+        </div>
+        
+        {% if request.user.is_authenticated %}
+
+            {% if user.socialaccount_set.all.0 %}
+            <div class="hidden lg:flex flex-1 justify-end">
+                    <h2 class=" font-medium flex items-center ">Welcome, {{ user.socialaccount_set.all.0.extra_data.name }}</h2>
+                    <div class="w-4"></div>
+                {% else %}
+            <div class="hidden lg:flex flex-1 justify-end">
+                <h2 class=" font-medium flex items-center ">{{ request.user.profile.first.full_name }}</h2>
+                <div class="w-4"></div>
+            {% endif %}
+
+          
+            <div class="w-4"></div>
+
+                                
+            <a href="/authentication/logout/">
+                <button class="flex gap-2 items-center border border-gray-400 px-6 py-2 rounded-lg hover:border-gray-600">
+                    <img src="{% static 'images/asset 1.svg' %}" alt="">
+                    <span class="font-display font-medium">Logout</span>
+                </button>
+            </a>
+
+            </div>
+
+
+            
+        {% else %}
+        <div class="hidden lg:flex flex-1 justify-end">
+        <a href="/authentication">
+            <button class="flex gap-2 items-center border border-gray-400 px-6 py-2 rounded-lg hover:border-gray-600">
+                <img src="{% static 'images/asset 1.svg' %}" alt="">
+                <span class="font-display font-medium">Login / Sign Up</span>
+                <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </a>
+        </div>
+        {% endif %}
+
+        
+
+        <button class="p-2 lg:hidden" onclick="handleMenu()">
+            <i class="fa-solid fa-bars text-gray-600"></i>
+        </button>
+
+        {% comment "" %} for mobile{% endcomment %}
+
+        <div id="nav-dialog" class="hidden fixed z-10 md:hidden bg-white inset-0 p-3">
+            <div id="nav-bar" class="flex justify-between">
+                <a href="/" id="brand" class="flex gap-2 items-center">
+                    
+                    <img class="object-cover max-w-12 max-h-12" src="{% static 'images/logo.jpg' %}" alt="Logo">
+                    <span class="text-lg font-medium font-display">WorkWise</span>
+                </a>
+                <button class="p-2 md:hidden" onclick="handleMenu()">
+                    <i class="fa-solid fa-xmark text-gray-600"></i>
+                </button>
+            </div>
+            <div class="mt-6">
+                <a href="/" class="font-medium m-3 p-3 hover:bg-gray-50 block rounded-lg">Home</a>
+                <a href="/home" class="font-medium m-3 p-3 hover:bg-gray-50 block rounded-lg">Services</a>
+                
+
+            </div>
+            <div class="h-[1px] bg-gray-300"></div>
+            <a href="/authentication">
+            <button class="mt-6 w-full flex gap-2 items-center  px-6 py-4 rounded-lg hover:bg-gray-50">
+                
+                <img src="{% static 'images/asset 1.svg' %}" alt="">
+                <span>Login</span>
+            </button>
+        </a>
+        </div>
+
+    </nav>
+
+    <div class="container mx-auto mt-16  h-screen max-w-full">
+        <div id="hero" class=" min-h-screen bg-gradient-to-b from-purple-50 via-orange-50 to-transparent mb-5">
+            <div id="hero-container" class="mx-auto px-2 pt-6 pb-16 flex flex-col sm:items-center sm:text-center sm:pt-12 ">
+                                
+                {% if user.socialaccount_set.all.0 %}
+                    <h1 class="text-5xl mb-5 font-mono">Welcome, {{ user.socialaccount_set.all.0.extra_data.name }} to Profile Page</h1>
+                {% else %}
+                    <h1 class="text-5xl mb-5 font-mono">Welcome, {{ request.user.profile.first.full_name }} to Profile Page</h1>
+                {% endif %}
+
+
+                <div class="container mx-auto mt-16 px-4">
+                    <div class="bg-white shadow-md rounded-lg p-6">
+                        <h2 class="text-2xl font-semibold mb-4">Order History</h2>
+                        {% if items %}
+                            <table class="min-w-full bg-white">
+                                <thead>
+                                    <tr>
+                                        <th class="py-2 px-4 border-b">Order ID</th>
+                                        <th class="py-2 px-4 border-b">Items</th>
+                                        <th class="py-2 px-4 border-b">Amount</th>
+                                        <th class="py-2 px-4 border-b">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for order in items %}
+                                        <tr>
+                                            <td class="py-2 px-4 border-b text-center">{{ order.razorpay_order_id }}</td>
+                                            <td class="py-2 px-4 border-b text-center">
+                                                <ul id="services-{{ order.order_id }}">
+                                                    <script>
+                                                        try {
+                                                            const services = JSON.parse('{{ order.items_json|safe }}');  // Use |safe to prevent escaping
+                                                            const serviceList = document.getElementById('services-{{ order.order_id }}');
+                                                            if (Object.keys(services).length === 0) {
+                                                                serviceList.innerHTML = `<li>No services</li>`;
+                                                            } else {
+                                                                Object.entries(services).forEach(([serviceId, qty]) => {
+                                                                    // Extract numeric part of the serviceId (e.g., "pr10" → "10")
+                                                                    const numericId = serviceId.replace(/\D/g, '');
+                                                                    fetch(`/get_service_details/${numericId}/`)
+                                                                        .then(response => response.json())
+                                                                        .then(data => {
+                                                                            if (data.error) {
+                                                                                serviceList.innerHTML += `<li>Service not found</li>`;
+                                                                            } else {
+                                                                                serviceList.innerHTML += `<li>${data.name} - Qty: ${qty}</li>`;
+                                                                            }
+                                                                        })
+                                                                        .catch(error => {
+                                                                            console.error(`Error fetching service details for ID ${numericId}:`, error);
+                                                                        });
+                                                                });
+                                                            }
+                                                        } catch (error) {
+                                                            console.error("Error parsing items_json:", error);
+                                                        }
+                                                    </script>
+                                                </ul>
+                                            </td>
+                                            <td class="py-2 px-4 border-b text-center">₹{{ order.amount }}</td>
+                                            
+                                            {% if  order.payment_verified %}
+                                            <td class="py-2 px-4 border-b text-center">Payment Sucess</td>
+                                            {% else %}  
+                                            <td class="py-2 px-4 border-b text-center">Payment Pending</td>
+                                            {% endif %}
+                                                
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        {% else %}
+                            <p class="text-gray-600">You have no orders yet.</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+
+</main>
+
+{% endblock content %}
+

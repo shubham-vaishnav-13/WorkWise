@@ -8,6 +8,8 @@ urlpatterns = [
     path('home/',views.home,name="home"),
     path('checkout/',views.checkout,name="checkout"),
     path('get_service_details/<int:service_id>/', views.get_service_details, name='get_service_details'),
+    path('profile/',views.profile,name="profile"),
+    path('verify/', views.verify_payment, name='verify_payment'),  # Ensure trailing slash
 
 ] 
 

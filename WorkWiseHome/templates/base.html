@@ -26,8 +26,8 @@
             <span class="text-lg font-medium font-display">WorkWise</span>
         </a>
         <div id="nav-menu" class="hidden lg:flex gap-12 mt-2">
-            <a href="/home" class="font-medium hover:text-primary">Home</a>
-            <a href="/Cleaner" class="font-medium hover:text-primary">Cleaning</a>
+            <a href="/" class="font-medium hover:text-primary">Home</a>
+            <a href="/home" class="font-medium hover:text-primary">Services</a>
 
         </div>
         
@@ -37,10 +37,24 @@
             <div class="hidden lg:flex flex-1 justify-end">
                     <h2 class=" font-medium flex items-center ">Welcome, {{ user.socialaccount_set.all.0.extra_data.name }}</h2>
                     <div class="w-4"></div>
+
+                    <a href="profile/">
+                        <button  type="button" class="flex gap-2 items-center border border-gray-400 px-6 py-2 rounded-lg hover:border-gray-600">
+                            <i class="fa-solid fa-user"></i>
+                            <span class="font-display font-medium">Profile</span>
+                        </button></a>
+
                 {% else %}
             <div class="hidden lg:flex flex-1 justify-end">
                 <h2 class=" font-medium flex items-center ">{{ request.user.profile.first.full_name }}</h2>
                 <div class="w-4"></div>
+
+                <a href="profile/">
+                    <button  type="button" class="flex gap-2 items-center border border-gray-400 px-6 py-2 rounded-lg hover:border-gray-600">
+                        <i class="fa-solid fa-user"></i>
+                        <span class="font-display font-medium">Profile</span>
+                    </button></a>
+
             {% endif %}
 
             <button data-popover-target="popover-bottom" data-popover-placement="bottom" type="button" class="flex gap-2 items-center border border-gray-400 px-6 py-2 rounded-lg hover:border-gray-600">
@@ -99,9 +113,13 @@
                 </button>
             </div>
             <div class="mt-6">
-                <a href="/home" class="font-medium m-3 p-3 hover:bg-gray-50 block rounded-lg">Home</a>
-                <a href="/cleaning" class="font-medium m-3 p-3 hover:bg-gray-50 block rounded-lg">Cleaing</a>
-                
+                <a href="/" class="font-medium m-3 p-3 hover:bg-gray-50 block rounded-lg">Home</a>
+                <a href="/home" class="font-medium m-3 p-3 hover:bg-gray-50 block rounded-lg">Services</a>
+                <a href="profile/">
+                    <button  type="button" class="flex gap-2 items-center border border-gray-400 px-6 py-2 rounded-lg hover:border-gray-600 mb-5">
+                        <i class="fa-solid fa-user"></i>
+                        <span class="font-display font-medium">Profile</span>
+                    </button></a>                
 
             </div>
             <div class="h-[1px] bg-gray-300"></div>
@@ -122,8 +140,8 @@
             <span class="text-lg font-medium font-display">WorkWise</span>
         </a>
         <div id="nav-menu" class="hidden lg:flex gap-12 mt-2">
-            <a href="/home" class="font-medium hover:text-primary">Home</a>
-            <a href="/Cleaner" class="font-medium hover:text-primary">Cleaning</a>
+            <a href="/" class="font-medium hover:text-primary ">Home</a>
+            <a href="/home" class="font-medium hover:text-primary">Services</a>
 
         </div>
         
@@ -133,10 +151,20 @@
             <div class="hidden lg:flex flex-1 justify-end">
                     <h2 class=" font-medium flex items-center ">Welcome, {{ user.socialaccount_set.all.0.extra_data.name }}</h2>
                     <div class="w-4"></div>
+                    <a href="profile/">
+                        <button  type="button" class="flex gap-2 items-center border border-gray-400 px-6 py-2 rounded-lg hover:border-gray-600">
+                            <i class="fa-solid fa-user"></i>
+                            <span class="font-display font-medium">Profile</span>
+                        </button></a>
                 {% else %}
             <div class="hidden lg:flex flex-1 justify-end">
                 <h2 class=" font-medium flex items-center ">{{ request.user.profile.first.full_name }}</h2>
                 <div class="w-4"></div>
+                <a href="profile/">
+                    <button  type="button" class="flex gap-2 items-center border border-gray-400 px-6 py-2 rounded-lg hover:border-gray-600">
+                        <i class="fa-solid fa-user"></i>
+                        <span class="font-display font-medium">Profile</span>
+                    </button></a>
             {% endif %}
 
             
@@ -186,8 +214,8 @@
                 </button>
             </div>
             <div class="mt-6">
-                <a href="/home" class="font-medium m-3 p-3 hover:bg-gray-50 block rounded-lg">Home</a>
-                <a href="/cleaning" class="font-medium m-3 p-3 hover:bg-gray-50 block rounded-lg">Cleaing</a>
+                <a href="/" class="font-medium m-3 p-3 hover:bg-gray-50 block rounded-lg">Home</a>
+                <a href="/home" class="font-medium m-3 p-3 hover:bg-gray-50 block rounded-lg">Services</a>
                 
 
             </div>

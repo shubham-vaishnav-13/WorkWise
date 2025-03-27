@@ -18,7 +18,7 @@
         </a>
         <div id="nav-menu" class="hidden lg:flex gap-12 mt-2">
             <a href="/home" class="font-medium hover:text-primary">Home</a>
-            <a href="/Cleaner" class="font-medium hover:text-primary">Cleaning</a>
+            <a href="/" class="font-medium hover:text-primary">Services</a>
 
         </div>
         
@@ -108,7 +108,7 @@
                         <h2 class="text-2xl font-semibold"> Step 1 - Review Your Cart </h2>
                     </div>
 
-                    <div class="my-4">
+                    <div class="my-4 m-5">
                         <ul class="divide-y divide-gray-200 border rounded-lg" id="items"></ul>
 
                         <div class="bg-gray-100 p-3 mt-3 rounded-lg">
@@ -121,7 +121,7 @@
 
 
 
-                <div class="col my-4">
+                <div class="col my-4 border rounded-lg p-8 shadow-lg">
                     <div class="my-4">
                         <h2 class="text-2xl font-semibold"> Step 2 - Enter Address & Other Details </h2>
                     </div>
@@ -204,9 +204,9 @@
         } else {
             itemsContainer.innerHTML = `
                 <li class="bg-gray-100 font-semibold p-4 flex items-center">
-                    <div class="flex-1 text-left">Service Name</div>
+                    <div class="flex-1 text-center">Service Name</div>
                     <div class="flex-1 text-center">Price</div>
-                    <div class="flex-1 text-right">Quantity</div>
+                    <div class="flex-1 text-center">Quantity</div>
                 </li>
             `;
 
@@ -224,18 +224,29 @@
                         let listItem = document.createElement("li");
                         listItem.classList.add("flex", "items-center", "justify-between", "py-2", "px-2", "hover:bg-gray-50", "text-sm");
                         listItem.innerHTML = `
-                            <div class="flex-1 text-left">${name}</div>
+                            <div class="flex-1 text-center">${name}</div>
                             <div class="flex-1 text-center">Rs.${price}</div>
-                            <div class="flex-1 text-right">Qty: ${qty}</div>
+                            <div class="flex-1 text-center">Qty: ${qty}</div>
                         `;
                         itemsContainer.appendChild(listItem);
                         document.getElementById("totalPrice").textContent = totalPrice;
+                        localStorage.setItem("totalPrice", totalPrice);
+                        $('#amt').val(totalPrice);
+                        console.log($('#amt').val());
                     })
                     .catch(error => console.error('Error:', error));
             }
         }
-    });
+      
+        $('#itemJson').val(JSON.stringify(cart));
+        
+        {% if thank %}
+        alert('Thank you for your order. Your order has been placed successfully. Your order id is {{ id }}');
+        localStorage.clear();
+        document.location.href = '/';
+        {% endif %}
 
+    });
 
 </script>
 {% endblock js %}
