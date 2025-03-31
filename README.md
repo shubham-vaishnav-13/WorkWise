@@ -1,4 +1,5 @@
-# 🚀 WorkWise - Home Services Marketplace
+# 🚀 WorkWise - Smart Solutions for Your Home Service Needs 🔥
+
 
 WorkWise is a **comprehensive online platform** that connects users with **trusted professionals** for a wide range of **home services**. The platform facilitates **easy service booking**, **secure payments**, and a **seamless user experience**. 🏡✨
 
