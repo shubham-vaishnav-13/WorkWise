@@ -20,7 +20,6 @@ WorkWise is a **comprehensive online platform** that connects users with **trust
   - ⏳ Service duration
   - 👨‍🔧 Service provider details
   - ⭐ User ratings and reviews
-- 🛠️ **Search Functionality:** Easily find specific services using keywords.
 
 ### 🛒 Shopping Cart
 - ➕ **Add/Remove Services:** Add services to the cart with a single click.
@@ -62,7 +61,7 @@ WorkWise is a **comprehensive online platform** that connects users with **trust
 ## 🏗️ Technical Stack
 - 🖥️ **Backend:** Django (Python web framework)
 - 🎨 **Frontend:** HTML, Tailwind CSS, JavaScript
-- 🗄️ **Database:** SQLite (development), configurable for **PostgreSQL** in production
+- 🗄️ **Database:** SQLite (development)
 - 🔑 **Authentication:** Django authentication system with social auth integration
 - 💳 **Payment Processing:** Razorpay API integration
 - 📂 **File Storage:** Django file storage for service images
@@ -72,7 +71,6 @@ WorkWise is a **comprehensive online platform** that connects users with **trust
 ## 🔒 Security Measures
 - 🔐 **Password Encryption:** Secure storage of user credentials.
 - 💳 **Payment Security:** Razorpay's built-in security mechanisms.
-- 🚧 **Data Protection:** Role-based access control (**RBAC**) to prevent unauthorized access.
 
 ---
 
@@ -83,21 +81,23 @@ WorkWise is a **comprehensive online platform** that connects users with **trust
    git clone https://github.com/your-repo/workwise.git
    cd workwise
    ```
-2. **Install dependencies:**  
+2. **Configure environment variables:**  
+   Create a `.venv` file and add credentials for **email, Razorpay, and database settings**.
+   
+4. **Install dependencies:**  
    ```sh
    pip install -r requirements.txt
    ```
-3. **Configure environment variables:**  
-   Create a `.venv` file and add credentials for **email, Razorpay, and database settings**.
-4. **Run database migrations:**  
+
+5. **Run database migrations:**  
    ```sh
    python manage.py migrate
    ```
-5. **Create a superuser for admin access:**  
+6. **Create a superuser for admin access:**  
    ```sh
    python manage.py createsuperuser
    ```
-6. **Start the development server:**  
+7. **Start the development server:**  
    ```sh
    python manage.py runserver
    ```
